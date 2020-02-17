@@ -1,0 +1,23 @@
+﻿<Window x:Class="stnd_72_v2.DAC_form"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:stnd_72_v2"
+        mc:Ignorable="d"
+        Title="DAC_form" Height="450" Width="256.987"
+        Closing="DataWindow_Closing" 
+        >
+    <Grid HorizontalAlignment="Left" Width="247">
+        <CheckBox x:Name="checkBox" Content="DAC powerdown" HorizontalAlignment="Left" Margin="16,48,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="checkBox1" Content="DAC reset" HorizontalAlignment="Left" Margin="16,69,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="checkBox2" Content="DAC init" HorizontalAlignment="Left" Margin="16,90,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.634,-1.587"/>
+        <CheckBox x:Name="checkBox3" Content="DAC DSP init" HorizontalAlignment="Left" Margin="16,111,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="102,145,0,0" TextWrapping="Wrap" Text="15000000" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="button_jesd_info" Content="JESD204  info" HorizontalAlignment="Left" Margin="16,228,0,0" VerticalAlignment="Top" Width="99"/>
+        <Button x:Name="button_dac_info" Content="DAC info" HorizontalAlignment="Left" Margin="16,263,0,0" VerticalAlignment="Top" Width="99"/>
+        <Button x:Name="button_dac_phy__info" Content="DAC PHY info" HorizontalAlignment="Left" Margin="16,298,0,0" VerticalAlignment="Top" Width="99"/>
+        <Button x:Name="button_init_lmk" Content="init LMK" HorizontalAlignment="Left" Margin="16,16,0,0" VerticalAlignment="Top" Width="99" Click="button_init_lmk_Click"/>
+
+    </Grid>
+</Window>

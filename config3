@@ -1,0 +1,30 @@
+Frame_size				18;
+Frame_number			1;
+Stop_bit				1;
+Msg_uniq_id				1;
+Sender_id				1003;
+Receiver_id				1001;
+Msg_size				12;
+Msg_type				1;
+Num_cmd_in_msg			4;
+
+Cmd_size				4;
+Cmd_type				9;
+Cmd_id					8;
+Cmd_time				5;
+8888
+Cmd_size				4;
+Cmd_type				10;
+Cmd_id					9;
+Cmd_time				6;
+9999
+Cmd_size				4;
+Cmd_type				11;
+Cmd_id				   10;
+Cmd_time				7;
+aaaa
+Cmd_size				4;
+Cmd_type				12;
+Cmd_id				   11;
+Cmd_time				8;
+bbbb

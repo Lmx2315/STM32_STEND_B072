@@ -1,0 +1,30 @@
+Frame_size				18;
+Frame_number			1;
+Stop_bit				1;
+Msg_uniq_id				1;
+Sender_id				1003;
+Receiver_id				1001;
+Msg_size				12;
+Msg_type				1;
+Num_cmd_in_msg			4;
+
+Cmd_size				4;
+Cmd_type				5;
+Cmd_id					4;
+Cmd_time				5;
+4444
+Cmd_size				4;
+Cmd_type				6;
+Cmd_id					5;
+Cmd_time				6;
+5555
+Cmd_size				4;
+Cmd_type				7;
+Cmd_id					6;
+Cmd_time				7;
+6666
+Cmd_size				4;
+Cmd_type				8;
+Cmd_id					7;
+Cmd_time				8;
+7777

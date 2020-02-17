@@ -1,0 +1,25 @@
+﻿<Window x:Class="stnd_72_v2.Panel_form"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:stnd_72_v2"
+        mc:Ignorable="d"
+        Title="Panel_form" Height="437.746" Width="177.76">
+    <Grid Margin="0,0,471,0">
+        <CheckBox x:Name="cb_ISPARV_geen" Content="ИСПР зелёный" HorizontalAlignment="Left" Margin="20,16,-120,0" VerticalAlignment="Top" Width="100" Click="cb_ISPARV_geen_Click"/>
+        <CheckBox x:Name="cb_ISPARV_red" Content="ИСПР красный" HorizontalAlignment="Left" Margin="20,37,-120,0" VerticalAlignment="Top" Width="100" Click="cb_ISPARV_red_Click"/>
+        <CheckBox x:Name="chbox_PRM1_K1" Content="ПРМ1" HorizontalAlignment="Left" Margin="19,147,-119,0" VerticalAlignment="Top" Width="100" Click="chbox_PRM1_K1_Click"/>
+        <CheckBox x:Name="chbox_PRD1_K1" Content="ПРД1" HorizontalAlignment="Left" Margin="19,168,-119,0" VerticalAlignment="Top" Width="100" Click="chbox_PRD1_K1_Click"/>
+        <CheckBox x:Name="chbox_PRD2_K1" Content="ПРД2" HorizontalAlignment="Left" Margin="19,189,-119,0" VerticalAlignment="Top" Width="100" Click="chbox_PRD2_K1_Click"/>
+        <CheckBox x:Name="chbox_PRM2_K1" Content="ПРМ2" HorizontalAlignment="Left" Margin="19,210,-119,0" VerticalAlignment="Top" Width="100" Click="chbox_PRM2_K1_Click"/>
+        <CheckBox x:Name="chbox_PRM1_K2" Content="ПРМ1" HorizontalAlignment="Left" Margin="19,266,-119,0" VerticalAlignment="Top" Width="100" Click="chbox_PRM1_K2_Click"/>
+        <CheckBox x:Name="chbox_PRD1_K2" Content="ПРД1" HorizontalAlignment="Left" Margin="19,287,-119,0" VerticalAlignment="Top" Width="100" Click="chbox_PRD1_K2_Click"/>
+        <CheckBox x:Name="chbox_PRD2_K2" Content="ПРД2" HorizontalAlignment="Left" Margin="19,308,-119,0" VerticalAlignment="Top" Width="100" Click="chbox_PRD2_K2_Click"/>
+        <CheckBox x:Name="chbox_PRM2_K2" Content="ПРМ2" HorizontalAlignment="Left" Margin="19,329,-119,0" VerticalAlignment="Top" Width="100" Click="chbox_PRM2_K2_Click"/>
+        <Label x:Name="label" Content="K1" HorizontalAlignment="Left" Margin="88,171,-112,0" VerticalAlignment="Top" Width="24"/>
+        <Label x:Name="label_Copy" Content="K2" HorizontalAlignment="Left" Margin="88,290,-112,0" VerticalAlignment="Top" Width="24"/>
+        <CheckBox x:Name="chbox_lin_svyaz_green" Content="ЛИН СВЯЗИ зелёный" HorizontalAlignment="Left" Margin="19,70,-155,0" VerticalAlignment="Top" Width="136" Click="chbox_lin_svyaz_green_Click"/>
+        <CheckBox x:Name="chbox_lin_svyaz_red" Content="ЛИН СВЯЗИ красный" HorizontalAlignment="Left" Margin="19,91,-155,0" VerticalAlignment="Top" Width="136" Click="chbox_lin_svyaz_red_Click"/>
+    </Grid>
+</Window>

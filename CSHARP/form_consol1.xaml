@@ -1,0 +1,24 @@
+﻿<Window x:Class="stnd_72_v2.form_consol1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:stnd_72_v2"
+        mc:Ignorable="d"
+        Title="form_consol1" Height="450" Width="332.969"
+         Closing="DataWindow_Closing"
+        >
+    <Grid HorizontalAlignment="Left" >
+        <RichTextBox x:Name="richTextBox"   >
+            <FlowDocument>
+                <FlowDocument.BindingGroup>
+                    <BindingGroup/>
+                </FlowDocument.BindingGroup>
+                <Paragraph>
+                    <Run Text="RichTextBox"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+    </Grid>
+</Window>

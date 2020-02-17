@@ -1,0 +1,28 @@
+﻿<Window x:Class="stnd_72_v2.ADC_form"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:stnd_72_v2"
+        mc:Ignorable="d"
+        Title="ADC_form" Height="450" Width="296.288"
+         Closing="DataWindow_Closing"
+        >
+    <Grid HorizontalAlignment="Left" Width="286">
+        <CheckBox x:Name="checkBox_mac_init" Content="mac init " HorizontalAlignment="Left" Margin="36,62,0,0" VerticalAlignment="Top" Click="checkBox_mac_init_Click"/>
+        <CheckBox x:Name="checkBox_adc_pwrdn" Content="ADC powerdown" HorizontalAlignment="Left" Margin="36,83,0,0" VerticalAlignment="Top" Checked="checkBox_adc_pwrdn_Checked" Click="checkBox_adc_pwrdn_Click"/>
+        <CheckBox x:Name="checkBox_ADC_init" Content="ADC init" HorizontalAlignment="Left" Margin="36,104,0,0" VerticalAlignment="Top" Click="checkBox_ADC_init_Click"/>
+        <CheckBox x:Name="checkBox_adc_test" Content="adc test" HorizontalAlignment="Left" Margin="108,133,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="textBox_adc_test" HorizontalAlignment="Left" Height="23" Margin="36,130,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="61"/>
+        <CheckBox x:Name="checkBox_switch0" Content="кл0" HorizontalAlignment="Left" Margin="202,42,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="checkBox_switch1" Content="кл1" HorizontalAlignment="Left" Margin="202,65,0,0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="190,21,0,0" TextWrapping="Wrap" Text="Ключи" VerticalAlignment="Top"/>
+        <TextBox x:Name="textBox_adc_test_Copy" HorizontalAlignment="Left" Height="23" Margin="36,165,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="61"/>
+        <TextBox x:Name="textBox_adc_test_Copy1" HorizontalAlignment="Left" Height="23" Margin="36,198,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="61"/>
+        <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="108,168,0,0" TextWrapping="Wrap" Text="Аттенюатор 0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="textBlock_Copy1" HorizontalAlignment="Left" Margin="108,201,0,0" TextWrapping="Wrap" Text="Аттенюатор 1" VerticalAlignment="Top"/>
+        <Button x:Name="button_adc_phy_info" Content="adc phy info" HorizontalAlignment="Left" Margin="36,246,0,0" VerticalAlignment="Top" Width="75" Click="button_adc_phy_info_Click"/>
+        <CheckBox x:Name="checkBox_mac1_data_run" Content="mac1 data RUN" HorizontalAlignment="Left" Margin="36,286,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="checkBox_mac0_data_run" Content="mac0 data RUN" HorizontalAlignment="Left" Margin="36,314,0,0" VerticalAlignment="Top"/>
+    </Grid>
+</Window>
