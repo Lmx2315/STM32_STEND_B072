@@ -18,7 +18,7 @@
         <Button x:Name="button_dac_info" Content="DAC info" HorizontalAlignment="Left" Margin="16,263,0,0" VerticalAlignment="Top" Width="99" Click="button_dac_info_Click"/>
         <Button x:Name="button_dac_phy__info" Content="DAC PHY info" HorizontalAlignment="Left" Margin="16,298,0,0" VerticalAlignment="Top" Width="99" Click="button_dac_phy__info_Click"/>
         <TextBox x:Name="textBox_phase" HorizontalAlignment="Left" Height="23" Margin="124,72,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="81"/>
-        <TextBox x:Name="textBox_amp" HorizontalAlignment="Left" Height="23" Margin="124,102,0,0" TextWrapping="Wrap" Text="32000" VerticalAlignment="Top" Width="81"/>
+        <TextBox x:Name="textBox_amp" HorizontalAlignment="Left" Height="23" Margin="124,102,0,0" TextWrapping="Wrap" Text="1024" VerticalAlignment="Top" Width="81"/>
         <Label x:Name="label" Content="Fdac" HorizontalAlignment="Left" Margin="210,41,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label_Copy" Content="Phase" HorizontalAlignment="Left" Margin="210,72,0,0" VerticalAlignment="Top"/>
         <Label x:Name="label_Copy1" Content="Amp" HorizontalAlignment="Left" Margin="210,101,0,0" VerticalAlignment="Top"/>

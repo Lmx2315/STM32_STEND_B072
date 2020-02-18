@@ -107,8 +107,8 @@ namespace stnd_72_v2
         int MSG_ID_CH7 = 107;
         int MSG_ID_CH8 = 108;
 
-        public byte CMD_DAC_PWRDN       = 50;
-        public byte CMD_DAC_RST         = 51;
+        public byte CMD_DAC_PWRDN       = 50;//команда вкл/выкл DAC 
+        public byte CMD_DAC_RST         = 51;//команда reset DAC
         public byte CMD_DAC_init        = 52;
         public byte CMD_DAC_DDS_init    = 53;
         public byte CMD_DAC_JESD_info   = 54;
