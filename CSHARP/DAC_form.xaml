@@ -5,19 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:stnd_72_v2"
         mc:Ignorable="d"
-        Title="DAC_form" Height="450" Width="256.987"
+        Title="DAC_form" Height="450" Width="272.645"
         Closing="DataWindow_Closing" 
         >
-    <Grid HorizontalAlignment="Left" Width="247">
-        <CheckBox x:Name="checkBox" Content="DAC powerdown" HorizontalAlignment="Left" Margin="16,48,0,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="checkBox1" Content="DAC reset" HorizontalAlignment="Left" Margin="16,69,0,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="checkBox2" Content="DAC init" HorizontalAlignment="Left" Margin="16,90,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.634,-1.587"/>
-        <CheckBox x:Name="checkBox3" Content="DAC DSP init" HorizontalAlignment="Left" Margin="16,111,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="102,145,0,0" TextWrapping="Wrap" Text="15000000" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="button_jesd_info" Content="JESD204  info" HorizontalAlignment="Left" Margin="16,228,0,0" VerticalAlignment="Top" Width="99"/>
-        <Button x:Name="button_dac_info" Content="DAC info" HorizontalAlignment="Left" Margin="16,263,0,0" VerticalAlignment="Top" Width="99"/>
-        <Button x:Name="button_dac_phy__info" Content="DAC PHY info" HorizontalAlignment="Left" Margin="16,298,0,0" VerticalAlignment="Top" Width="99"/>
-        <Button x:Name="button_init_lmk" Content="init LMK" HorizontalAlignment="Left" Margin="16,16,0,0" VerticalAlignment="Top" Width="99" Click="button_init_lmk_Click"/>
+    <Grid Margin="0,0,-15,0">
+        <CheckBox x:Name="checkBox" Content="DAC powerdown" HorizontalAlignment="Left" Margin="16,48,0,0" VerticalAlignment="Top" Checked="checkBox_Checked" Click="checkBox_Click"/>
+        <CheckBox x:Name="checkBox_DAC_reset" Content="DAC reset" HorizontalAlignment="Left" Margin="16,69,0,0" VerticalAlignment="Top" Click="checkBox_DAC_reset_Click"/>
+        <CheckBox x:Name="checkBox2" Content="DAC init" HorizontalAlignment="Left" Margin="16,90,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.634,-1.587" Click="checkBox2_Click"/>
+        <CheckBox x:Name="checkBox_DAC_DSP_init" Content="DAC DSP init" HorizontalAlignment="Left" Margin="16,111,0,0" VerticalAlignment="Top" Click="checkBox_DAC_DSP_init_Click"/>
+        <TextBox x:Name="textBox_freq" HorizontalAlignment="Left" Height="23" Margin="124,43,0,0" TextWrapping="Wrap" Text="420000000" VerticalAlignment="Top" Width="81"/>
+        <Button x:Name="button_jesd_info" Content="JESD204  info" HorizontalAlignment="Left" Margin="16,228,0,0" VerticalAlignment="Top" Width="99" Click="button_jesd_info_Click"/>
+        <Button x:Name="button_dac_info" Content="DAC info" HorizontalAlignment="Left" Margin="16,263,0,0" VerticalAlignment="Top" Width="99" Click="button_dac_info_Click"/>
+        <Button x:Name="button_dac_phy__info" Content="DAC PHY info" HorizontalAlignment="Left" Margin="16,298,0,0" VerticalAlignment="Top" Width="99" Click="button_dac_phy__info_Click"/>
+        <TextBox x:Name="textBox_phase" HorizontalAlignment="Left" Height="23" Margin="124,72,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="81"/>
+        <TextBox x:Name="textBox_amp" HorizontalAlignment="Left" Height="23" Margin="124,102,0,0" TextWrapping="Wrap" Text="32000" VerticalAlignment="Top" Width="81"/>
+        <Label x:Name="label" Content="Fdac" HorizontalAlignment="Left" Margin="210,41,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label_Copy" Content="Phase" HorizontalAlignment="Left" Margin="210,72,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label_Copy1" Content="Amp" HorizontalAlignment="Left" Margin="210,101,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="button_init_dac" Content="init" HorizontalAlignment="Left" Margin="130,164,0,0" VerticalAlignment="Top" Width="75" Click="button_init_dac_Click"/>
+        <TextBox x:Name="textBox_Copy2" HorizontalAlignment="Left" Height="23" Margin="124,130,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="81"/>
+        <Label x:Name="label_delay" Content="Delay" HorizontalAlignment="Left" Margin="210,128,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

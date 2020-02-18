@@ -1,0 +1,14 @@
+CMD_DAC_PWRDN       = 50;
+CMD_DAC_RST         = 51;
+CMD_DAC_init        = 52;
+CMD_DAC_DDS_init    = 53;
+CMD_DAC_JESD_info   = 54;
+CMD_DAC_info        = 55;
+CMD_DAC_PHY_info    = 56;
+CMD_DAC_DDS_freq    = 57;
+CMD_DAC_DDS_phase   = 58;
+CMD_DAC_DDS_amp     = 59;
+CMD_DAC_delay       = 60;
+CMD_DAC_mixer_gain  = 61;
+CMD_DAC_coarse_dac  = 62;
+CMD_DAC_QMC_gain    = 63;

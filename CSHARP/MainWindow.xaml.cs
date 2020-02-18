@@ -69,6 +69,23 @@ namespace stnd_72_v2
         public byte PRD1_k2;
         public byte PRD2_k2;
 
+        public class DAC
+        {
+            public bool PWRDN;
+            public bool RST;
+            public bool INIT;
+            public bool DDS_init;
+
+            public string Name;
+            public DAC(string n)
+            {
+                Name = n;
+            }
+        }
+
+        public DAC DAC0 = new DAC("DAC0");
+        public DAC DAC1 = new DAC("DAC1"); 
+
         public ADC ADC0_072;
         public ADC ADC1_072;
         public DAC DAC0_072;
@@ -89,6 +106,23 @@ namespace stnd_72_v2
         int MSG_ID_CH6 = 106;
         int MSG_ID_CH7 = 107;
         int MSG_ID_CH8 = 108;
+
+        public byte CMD_DAC_PWRDN       = 50;
+        public byte CMD_DAC_RST         = 51;
+        public byte CMD_DAC_init        = 52;
+        public byte CMD_DAC_DDS_init    = 53;
+        public byte CMD_DAC_JESD_info   = 54;
+        public byte CMD_DAC_info        = 55;
+        public byte CMD_DAC_PHY_info    = 56;
+        public byte CMD_DAC_DDS_freq    = 57;
+        public byte CMD_DAC_DDS_phase   = 58;
+        public byte CMD_DAC_DDS_amp     = 59;
+        public byte CMD_DAC_delay       = 60;
+        public byte CMD_DAC_mixer_gain  = 61;
+        public byte CMD_DAC_coarse_dac  = 62;
+        public byte CMD_DAC_QMC_gain    = 63;
+
+        public byte FLAG_ETH_request = 0;//флаг отосланного запроса на кассету, проверяется на предмет ответа в таймере
 
         const uint MSG_TEMP_CH1 = 111;
         const uint MSG_TEMP_CH2 = 112;
@@ -151,9 +185,16 @@ namespace stnd_72_v2
 
             //Create the server.
            IPEndPoint serverEnd = new IPEndPoint(my_ip, my_port);
-
-            _server = new UdpClient(serverEnd);
-            _server.Client.ReceiveBufferSize = 8192 * 200;//увеличиваем размер приёмного буфера!!!
+            try
+            {
+                _server = new UdpClient(serverEnd);
+                _server.Client.ReceiveBufferSize = 8192 * 200;//увеличиваем размер приёмного буфера!!!
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                MessageBox.Show("Нет абонента!");
+            }            
 
             //Start listening.
 
@@ -237,7 +278,6 @@ namespace stnd_72_v2
 
             byte[] a = new byte[1];
 
-
             a[0] = Convert.ToByte(100);
             UDP_SEND(
                 100,//команда 100 - CMD_STATUS
@@ -245,7 +285,6 @@ namespace stnd_72_v2
                 1,  //число данных в байтах
                 0   //время исполнения 0 - значит сразу как сможешь
                 );
-
         }
 
         Frame MSG1 = new Frame();
@@ -330,9 +369,7 @@ namespace stnd_72_v2
 
             Timer2.Tick += new EventHandler(Timer2_Tick);
             Timer2.Interval = new TimeSpan(0, 0, 0, 0, 250);
-            //     Timer2.Start();//запускаю таймер проверяющий приём по UDP
-
-            Start();//запускаю сервер UDP
+            //     Timer2.Start();//запускаю таймер проверяющий приём по UDP          
         }
 
         private void button_comport_send_Click(object sender, RoutedEventArgs e)
@@ -482,6 +519,9 @@ namespace stnd_72_v2
             string MSG = "";
             UInt64 sch_cmd = 0;
             MSG = config;
+
+            Start();//запускаю сервер UDP
+            Timer2.Start();//запускаю таймер проверяющий приём по UDP  
 
             try
             {
@@ -875,6 +915,9 @@ namespace stnd_72_v2
             }
         }
 
+        private void button_init_lmk_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
     }
 }
