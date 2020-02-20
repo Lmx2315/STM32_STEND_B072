@@ -99,7 +99,7 @@ namespace stnd_72_v2
                 //-----отсылаем команду кода freq_ramp DDS внутри DAC        --------
                 cmd = main.CMD_DDS_freq_ramp;//длина команды 48 бит
 
-                data = Convert.ToInt64(textBox_Freq_ramp);
+                data = Convert.ToInt64(textBox_Freq_ramp.Text);
 
                 a[1] = Convert.ToByte(data >> 40 & 0xff);
                 a[2] = Convert.ToByte(data >> 32 & 0xff);
@@ -120,7 +120,7 @@ namespace stnd_72_v2
                 //-----отсылаем команду кода Ramp rate сигнала DDS внутри DAC        --------
                 cmd = main.CMD_DDS_ramp_rate;//длина команды 16 бит
 
-                data = Convert.ToInt64(textBox_Ramp_rate);
+                data = Convert.ToInt64(textBox_Ramp_rate.Text);
 
                 a[2] = Convert.ToByte(data >> 8 & 0xff);
                 a[3] = Convert.ToByte(data >> 0 & 0xff);

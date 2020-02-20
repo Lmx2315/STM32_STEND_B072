@@ -526,7 +526,7 @@ namespace stnd_72_v2
             MSG = config;
 
             Start();//запускаю сервер UDP
-            Timer2.Start();//запускаю таймер проверяющий приём по UDP  
+        //    Timer2.Start();//запускаю таймер проверяющий приём по UDP  
 
             try
             {
