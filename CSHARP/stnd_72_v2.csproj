@@ -65,6 +65,9 @@
     <Compile Include="DAC_form.xaml.cs">
       <DependentUpon>DAC_form.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DDS_form.xaml.cs">
+      <DependentUpon>DDS_form.xaml</DependentUpon>
+    </Compile>
     <Page Include="ADC_form.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -93,6 +96,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Panel_form.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DDS_form.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

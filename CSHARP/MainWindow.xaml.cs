@@ -121,6 +121,11 @@ namespace stnd_72_v2
         public byte CMD_DAC_mixer_gain  = 61;
         public byte CMD_DAC_coarse_dac  = 62;
         public byte CMD_DAC_QMC_gain    = 63;
+        public byte CMD_LMK_init        = 64;
+        public byte CMD_DDS_freq        = 65;//команда установки частоты DDS в ПЛИС
+        public byte CMD_DDS_phase       = 66;
+        public byte CMD_DDS_freq_ramp   = 67;
+        public byte CMD_DDS_ramp_rate   = 68;
 
         public byte FLAG_ETH_request = 0;//флаг отосланного запроса на кассету, проверяется на предмет ответа в таймере
 
@@ -708,9 +713,10 @@ namespace stnd_72_v2
         }
         //-----------------------------------------------------
 
-        public  bool[]  A_form = new bool[2];
-        public  bool[]  D_form = new bool[2];
-        public  bool[]  P_form = new bool[1];
+        public  bool[]  A_form      = new bool[2];
+        public  bool[]  D_form      = new bool[2];
+        public  bool[]  P_form      = new bool[1];
+        public  bool[]  DDS_form    = new bool[1];
         public  bool[] Console_form = new bool[1];
 
         private void button_adc0_Click(object sender, RoutedEventArgs e)
@@ -917,7 +923,54 @@ namespace stnd_72_v2
 
         private void button_init_lmk_Click(object sender, RoutedEventArgs e)
         {
+            //DAC_info
+            string s1 = "";
+            byte cmd = 203;
+            int data = 0;
+            byte[] a = new byte[4];
 
+                cmd = CMD_LMK_init;
+                data = 1;
+
+                a[3] = 1;
+                FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
+                UDP_SEND
+                           (
+                           cmd, //команда 
+                           a,   //данные
+                           4,   //число данных в байтах
+                           0    //время исполнения , 0 - значит немедленно как сможешь.
+                           );
+
+                s1 = " ~0 init_lmk:" + Convert.ToString(a[3]) + "; "; //
+
+                try
+                {
+                    if (serialPort1.IsOpen == false)
+                    {
+                        serialPort1.Open();
+                    }
+                    Debug.WriteLine("шлём:" + s1);
+                    serialPort1.Write(s1);
+
+                }
+                catch (Exception ex)
+                {
+                    // что-то пошло не так и упало исключение... Выведем сообщение исключения
+                    Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'", serialPort1.PortName, ex.Message));
+                }
+            
+        }
+
+        private void button_DDS_Click(object sender, RoutedEventArgs e)
+        {
+            if (DDS_form[0] == false)
+            {
+                DDS_form newForm = new DDS_form("DDS");
+                DDS_form[0] = true;
+                newForm.Show();
+                newForm.Owner = this;
+            }
         }
     }
 }
