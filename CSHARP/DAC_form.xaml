@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:stnd_72_v2"
         mc:Ignorable="d"
-        Title="DAC_form" Height="450" Width="272.645"
+        Title="DAC_form" Height="450" Width="273.326"
         Closing="DataWindow_Closing" 
         >
-    <Grid Margin="0,0,-15,0">
+    <Grid Margin="0,0,9,0">
         <CheckBox x:Name="checkBox" Content="DAC powerdown" HorizontalAlignment="Left" Margin="16,48,0,0" VerticalAlignment="Top" Checked="checkBox_Checked" Click="checkBox_Click"/>
         <CheckBox x:Name="checkBox_DAC_reset" Content="DAC reset" HorizontalAlignment="Left" Margin="16,69,0,0" VerticalAlignment="Top" Click="checkBox_DAC_reset_Click"/>
         <CheckBox x:Name="checkBox2" Content="DAC init" HorizontalAlignment="Left" Margin="16,90,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.634,-1.587" Click="checkBox2_Click"/>
@@ -25,6 +25,11 @@
         <Button x:Name="button_init_dac" Content="init" HorizontalAlignment="Left" Margin="130,164,0,0" VerticalAlignment="Top" Width="75" Click="button_init_dac_Click"/>
         <TextBox x:Name="textBox_Copy2" HorizontalAlignment="Left" Height="23" Margin="124,130,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="81"/>
         <Label x:Name="label_delay" Content="Delay" HorizontalAlignment="Left" Margin="210,128,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="checkBox_DAC_mixer_gain" Content="DAC mixer gain" HorizontalAlignment="Left" Margin="16,130,0,0" VerticalAlignment="Top" Click="checkBox_DAC_mixer_gain_Click"/>
+        <TextBox x:Name="textBox_Coarse_dac" HorizontalAlignment="Left" Height="23" Margin="76,164,0,0" TextWrapping="Wrap" Text="7" VerticalAlignment="Top" Width="47" TextAlignment="Right"/>
+        <Label x:Name="label_delay_Copy" Content="Coarse dac" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="74"/>
+        <TextBox x:Name="textBox_QMC_gain" HorizontalAlignment="Left" Height="23" Margin="76,196,0,0" TextWrapping="Wrap" Text="1024" VerticalAlignment="Top" Width="47" TextAlignment="Right"/>
+        <Label x:Name="label_delay_Copy1" Content="QMC gain" HorizontalAlignment="Left" Margin="10,192,0,0" VerticalAlignment="Top" Width="74"/>
 
     </Grid>
 </Window>

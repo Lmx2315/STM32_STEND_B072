@@ -453,9 +453,10 @@ namespace stnd_72_v2
             //DAC_info
             string s1 = "";
             byte cmd = 203;
-            long data = 0;
+            double result = 0;
+            UInt64 data = 0;
             byte[] a = new byte[7];
-            long Fnco = 1536_000_000;//тактовая частота DAC
+            double Fnco = 1536_000_000;//тактовая частота DAC
 
             MainWindow main = this.Owner as MainWindow;
             if (main != null)
@@ -466,10 +467,83 @@ namespace stnd_72_v2
                 else
                 if (Name_this == "DAC1") a[0] = 2;//второй цап
 
+                //-----------------DAC_coarse_dac----------------------------------------
+                cmd = main.CMD_DAC_coarse_dac;//длина команды 16 бит
+
+                data = Convert.ToUInt16 (textBox_Coarse_dac.Text);
+
+                a[2] = Convert.ToByte(data >> 8 & 0xff);
+                a[3] = Convert.ToByte(data >> 0 & 0xff);
+
+                main.FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
+                main.UDP_SEND
+                           (
+                           cmd, //команда 
+                           a,   //данные
+                           4,   //число данных в байтах
+                           0    //время исполнения , 0 - значит немедленно как сможешь.
+                           );    
+                if (Name_this == "DAC0") s1 = " ~0 DAC1_coarse_dac:" + data.ToString() + "; "; //команда заставляет мк установить ресет и снять его!!!
+                else
+                if (Name_this == "DAC1") s1 = " ~0 DAC2_coarse_dac:" + data.ToString() + "; ";
+
+                try
+                {
+                    if (main.serialPort1.IsOpen == false)
+                    {
+                        main.serialPort1.Open();
+                    }
+                    Debug.WriteLine("шлём:" + s1);
+                    main.serialPort1.Write(s1);
+
+                }
+                catch (Exception ex)
+                {
+                    // что-то пошло не так и упало исключение... Выведем сообщение исключения
+                    Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'", main.serialPort1.PortName, ex.Message));
+                }
+                //----------------------DAC_QMC_gain-----------------------------------
+                cmd = main.CMD_DAC_QMC_gain;//длина команды 16 бит
+
+                data = Convert.ToUInt16(textBox_QMC_gain.Text);
+
+                a[2] = Convert.ToByte(data >> 8 & 0xff);
+                a[3] = Convert.ToByte(data >> 0 & 0xff);
+
+                main.FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
+                main.UDP_SEND
+                           (
+                           cmd, //команда 
+                           a,   //данные
+                           4,   //число данных в байтах
+                           0    //время исполнения , 0 - значит немедленно как сможешь.
+                           );
+                if (Name_this == "DAC0") s1 = " ~0 DAC1_QMC_gain:" + data.ToString() + "; "; //команда заставляет мк установить ресет и снять его!!!
+                else
+                if (Name_this == "DAC1") s1 = " ~0 DAC2_QMC_gain:" + data.ToString() + "; ";
+
+                try
+                {
+                    if (main.serialPort1.IsOpen == false)
+                    {
+                        main.serialPort1.Open();
+                    }
+                    Debug.WriteLine("шлём:" + s1);
+                    main.serialPort1.Write(s1);
+
+                }
+                catch (Exception ex)
+                {
+                    // что-то пошло не так и упало исключение... Выведем сообщение исключения
+                    Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'", main.serialPort1.PortName, ex.Message));
+                }
+
+
                 //-----отсылаем команду кода частоты DDS внутри DAC--------
                 cmd = main.CMD_DAC_DDS_freq;//длина команды 48 бит
 
-                data = (Convert.ToInt64(textBox_freq.Text) * Fnco)/ Convert.ToInt64(Math.Pow(2, 48));
+                result = (Convert.ToDouble(textBox_freq.Text) *  Convert.ToDouble(Math.Pow(2, 48)))/ Fnco;
+                data   =  Convert.ToUInt64(result);
 
                 a[1] = Convert.ToByte(data >> 40 & 0xff);
                 a[2] = Convert.ToByte(data >> 32 & 0xff);
@@ -490,7 +564,7 @@ namespace stnd_72_v2
                 //-----отсылаем команду кода фазы DDS внутри DAC        --------
                 cmd = main.CMD_DAC_DDS_phase;//длина команды 16 бит
 
-                data = (Convert.ToInt64(textBox_phase.Text) * Convert.ToInt64(Math.Pow(2, 16)))/360;
+                data = (Convert.ToUInt64(textBox_phase.Text) * Convert.ToUInt64(Math.Pow(2, 16)))/360;
 
                 a[2] = Convert.ToByte(data >> 8 & 0xff);
                 a[3] = Convert.ToByte(data >> 0 & 0xff);
@@ -507,7 +581,7 @@ namespace stnd_72_v2
                 //-----отсылаем команду кода амплитуды DDS внутри DAC        --------
                 cmd = main.CMD_DAC_DDS_amp;//длина команды 16 бит
 
-                data = Convert.ToInt64(textBox_phase.Text);
+                data = Convert.ToUInt64(textBox_phase.Text);
 
                 a[2] = Convert.ToByte(data >> 8 & 0xff);
                 a[3] = Convert.ToByte(data >> 0 & 0xff);
@@ -524,7 +598,7 @@ namespace stnd_72_v2
                 //-----отсылаем команду кода задержки сигнала DDS внутри DAC        --------
                 cmd = main.CMD_DAC_delay;//длина команды 16 бит
 
-                data = Convert.ToInt64(textBox_phase.Text);
+                data = Convert.ToUInt64(textBox_phase.Text);
 
                 a[2] = Convert.ToByte(data >> 8 & 0xff);
                 a[3] = Convert.ToByte(data >> 0 & 0xff);
@@ -559,6 +633,64 @@ namespace stnd_72_v2
                     Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'", main.serialPort1.PortName, ex.Message));
                 }
                 */
+            }
+        }
+
+        private void checkBox_DAC_mixer_gain_Click(object sender, RoutedEventArgs e)
+        {
+            //DAC_mixer_gain
+            string s1 = "";
+            byte cmd = 203;
+            int data = 0;
+            byte[] a = new byte[4];
+
+            Timer1.Start();
+
+            MainWindow main = this.Owner as MainWindow;
+            if (main != null)
+            {
+                cmd = main.CMD_DAC_mixer_gain;//команда
+
+                if (Name_this == "DAC0") main.DAC0.DAC_mixer_gain = (bool)checkBox_DAC_mixer_gain.IsChecked;
+                else
+                if (Name_this == "DAC1") main.DAC1.DAC_mixer_gain = (bool)checkBox_DAC_mixer_gain.IsChecked;
+
+                data = Convert.ToByte((bool)checkBox_DAC_mixer_gain.IsChecked);
+
+                //для кого шлём команду
+                if (Name_this == "DAC0") a[0] = 1;//первый цап
+                else
+                if (Name_this == "DAC1") a[0] = 2;//второй цап
+
+                a[3] = Convert.ToByte(data);
+                main.FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
+                main.UDP_SEND
+                           (
+                           cmd, //команда управление светодиодом "ИСПРАВ"
+                           a,   //данные
+                           4,   //число данных в байтах
+                           0    //время исполнения , 0 - значит немедленно как сможешь.
+                           );
+
+                if (Name_this == "DAC0") s1 = " ~0 DAC1_mixer_gain:" + Convert.ToString(a[3]) + "; "; //команда заставляет мк установить ресет и снять его!!!
+                else
+                if (Name_this == "DAC1") s1 = " ~0 DAC2_mixer_gain:" + Convert.ToString(a[3]) + "; ";
+
+                try
+                {
+                    if (main.serialPort1.IsOpen == false)
+                    {
+                        main.serialPort1.Open();
+                    }
+                    Debug.WriteLine("шлём:" + s1);
+                    main.serialPort1.Write(s1);
+
+                }
+                catch (Exception ex)
+                {
+                    // что-то пошло не так и упало исключение... Выведем сообщение исключения
+                    Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'", main.serialPort1.PortName, ex.Message));
+                }
             }
         }
     }

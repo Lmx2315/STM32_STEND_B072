@@ -75,6 +75,9 @@ namespace stnd_72_v2
             public bool RST;
             public bool INIT;
             public bool DDS_init;
+            public bool DAC_mixer_gain;
+            public UInt16 DAC_coarse_dac;
+            public UInt16 DAC_QMC_gain;
 
             public string Name;
             public DAC(string n)
@@ -126,7 +129,7 @@ namespace stnd_72_v2
         public byte CMD_DDS_phase       = 66;
         public byte CMD_DDS_freq_ramp   = 67;
         public byte CMD_DDS_ramp_rate   = 68;
-
+     
         public byte FLAG_ETH_request = 0;//флаг отосланного запроса на кассету, проверяется на предмет ответа в таймере
 
         const uint MSG_TEMP_CH1 = 111;
