@@ -96,9 +96,9 @@ namespace stnd_72_v2
         public MAC MAC0_072;//переменная состояния блока МАС ethernet в 072
         public MAC MAC1_072;//переменная состояния блока МАС ethernet в 072
 
-        public uint SWITCH_072;//переменная состояния переключателей 072
-        public uint DDS_072;   //переменная состояния кода частоты модуля DDS в блоке тест на DAC
-        public uint ATT_072;   //переменная состояния аттенюаторов 072
+        public byte SWITCH_072=0xff;//переменная состояния переключателей 072
+        public uint DDS_072;        //переменная состояния кода частоты модуля DDS в блоке тест на DAC
+        public uint ATT_072;        //переменная состояния аттенюаторов 072
 
         int MSG_CMD_OK = 3;//квитанция о том что команда выполненна
         int MSG_ID_CH1 = 101;
@@ -129,7 +129,9 @@ namespace stnd_72_v2
         public byte CMD_DDS_phase       = 66;
         public byte CMD_DDS_freq_ramp   = 67;
         public byte CMD_DDS_ramp_rate   = 68;
-     
+        public byte CMD_CHANNEL         = 69;//команда переключения каналов в 072 (между ЦАП-АЦП и ЦАП-Выход)
+
+
         public byte FLAG_ETH_request = 0;//флаг отосланного запроса на кассету, проверяется на предмет ответа в таймере
 
         const uint MSG_TEMP_CH1 = 111;
@@ -973,6 +975,165 @@ namespace stnd_72_v2
                 DDS_form[0] = true;
                 newForm.Show();
                 newForm.Owner = this;
+            }
+        }
+
+        private void checkBox_ch1_Click(object sender, RoutedEventArgs e)
+        {   //
+            string s1;
+            byte  cmd;
+            byte[] a = new byte[4];
+
+            if (checkBox_ch1.IsChecked ?? true) SWITCH_072 = Convert.ToByte(SWITCH_072 |   0x01);
+            else                                SWITCH_072 = Convert.ToByte(SWITCH_072 & (~0x01));
+
+            cmd = CMD_CHANNEL;
+
+                a[3] = SWITCH_072;
+                FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
+                UDP_SEND
+                           (
+                           cmd, //команда управление светодиодом "ИСПРАВ"
+                           a,   //данные
+                           4,   //число данных в байтах
+                           0    //время исполнения , 0 - значит немедленно как сможешь.
+                           );
+
+                s1 = " ~0 upr_switch:" + Convert.ToString(a[3]) + "; "; //команда по уарту
+
+                try
+                {
+                    if (serialPort1.IsOpen == false)
+                    {
+                        serialPort1.Open();
+                    }
+                    Debug.WriteLine("шлём:" + s1);
+                    serialPort1.Write(s1);
+                }
+                catch (Exception ex)
+                {
+                    // что-то пошло не так и упало исключение... Выведем сообщение исключения
+                    Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'",serialPort1.PortName, ex.Message));
+                }
+            
+        }
+
+        private void checkBox_ch2_Click(object sender, RoutedEventArgs e)
+        {
+            string s1;
+            byte cmd;
+            byte[] a = new byte[4];
+
+            if (checkBox_ch2.IsChecked ?? true) SWITCH_072 = Convert.ToByte(SWITCH_072 |   0x02);
+            else                                SWITCH_072 = Convert.ToByte(SWITCH_072 & (~0x02));
+
+            cmd = CMD_CHANNEL;
+
+            a[3] = SWITCH_072;
+            FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
+            UDP_SEND
+                       (
+                       cmd, //команда управление светодиодом "ИСПРАВ"
+                       a,   //данные
+                       4,   //число данных в байтах
+                       0    //время исполнения , 0 - значит немедленно как сможешь.
+                       );
+
+            s1 = " ~0 upr_switch:" + Convert.ToString(a[3]) + "; "; //команда по уарту
+
+            try
+            {
+                if (serialPort1.IsOpen == false)
+                {
+                    serialPort1.Open();
+                }
+                Debug.WriteLine("шлём:" + s1);
+                serialPort1.Write(s1);
+            }
+            catch (Exception ex)
+            {
+                // что-то пошло не так и упало исключение... Выведем сообщение исключения
+                Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'", serialPort1.PortName, ex.Message));
+            }
+
+        }
+
+        private void checkBox_ch3_Click(object sender, RoutedEventArgs e)
+        {
+            string s1;
+            byte cmd;
+            byte[] a = new byte[4];
+
+            if (checkBox_ch3.IsChecked ?? true) SWITCH_072 = Convert.ToByte(SWITCH_072 |   0x04);
+            else                                SWITCH_072 = Convert.ToByte(SWITCH_072 & (~0x04));
+
+            cmd = CMD_CHANNEL;
+
+            a[3] = SWITCH_072;
+            FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
+            UDP_SEND
+                       (
+                       cmd, //команда управление светодиодом "ИСПРАВ"
+                       a,   //данные
+                       4,   //число данных в байтах
+                       0    //время исполнения , 0 - значит немедленно как сможешь.
+                       );
+
+            s1 = " ~0 upr_switch:" + Convert.ToString(a[3]) + "; "; //команда по уарту
+
+            try
+            {
+                if (serialPort1.IsOpen == false)
+                {
+                    serialPort1.Open();
+                }
+                Debug.WriteLine("шлём:" + s1);
+                serialPort1.Write(s1);
+            }
+            catch (Exception ex)
+            {
+                // что-то пошло не так и упало исключение... Выведем сообщение исключения
+                Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'", serialPort1.PortName, ex.Message));
+            }
+
+        }
+
+        private void checkBox_ch4_Click(object sender, RoutedEventArgs e)
+        {
+            string s1;
+            byte cmd;
+            byte[] a = new byte[4];
+
+            if (checkBox_ch4.IsChecked ?? true) SWITCH_072 = Convert.ToByte(SWITCH_072 |   0x08);
+            else                                SWITCH_072 = Convert.ToByte(SWITCH_072 & (~0x08));
+
+            cmd = CMD_CHANNEL;
+
+            a[3] = SWITCH_072;
+            FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
+            UDP_SEND
+                       (
+                       cmd, //команда управление светодиодом "ИСПРАВ"
+                       a,   //данные
+                       4,   //число данных в байтах
+                       0    //время исполнения , 0 - значит немедленно как сможешь.
+                       );
+
+            s1 = " ~0 upr_switch:" + Convert.ToString(a[3]) + "; "; //команда по уарту
+
+            try
+            {
+                if (serialPort1.IsOpen == false)
+                {
+                    serialPort1.Open();
+                }
+                Debug.WriteLine("шлём:" + s1);
+                serialPort1.Write(s1);
+            }
+            catch (Exception ex)
+            {
+                // что-то пошло не так и упало исключение... Выведем сообщение исключения
+                Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'", serialPort1.PortName, ex.Message));
             }
         }
     }
