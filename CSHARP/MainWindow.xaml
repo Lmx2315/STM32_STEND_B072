@@ -35,11 +35,11 @@
         <Button x:Name="button_Panel" Content="Лиц. панель " HorizontalAlignment="Left" Margin="53,23,0,0" VerticalAlignment="Top" Width="75" Click="button_Click_2"/>
         <Button x:Name="button_init_lmk" Content="init LMK" HorizontalAlignment="Left" Margin="53,251,0,0" VerticalAlignment="Top" Width="75" Click="button_init_lmk_Click"/>
         <Button x:Name="button_DDS" Content="DDS" HorizontalAlignment="Left" Margin="53,208,0,0" VerticalAlignment="Top" Width="75" Click="button_DDS_Click"/>
-        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="72" Margin="53,304,0,0" Stroke="Black" VerticalAlignment="Top" Width="222"/>
-        <CheckBox x:Name="checkBox_ch1" Content="К1" Margin="68,331,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Click="checkBox_ch1_Click"/>
-        <CheckBox x:Name="checkBox_ch2" Content="К2" Margin="127,331,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="1.41,0.348" Click="checkBox_ch2_Click"/>
-        <CheckBox x:Name="checkBox_ch3" Content="К3" Margin="181,331,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Click="checkBox_ch3_Click"/>
-        <CheckBox x:Name="checkBox_ch4" Content="К4" Margin="227,331,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Click="checkBox_ch4_Click"/>
+     
+        <CheckBox x:Name="checkBox_ch1" Content="К1" Margin="68,331,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Click="checkBox_ch1_Click" IsChecked="True"/>
+        <CheckBox x:Name="checkBox_ch2" Content="К2" Margin="127,331,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="1.41,0.348" Click="checkBox_ch2_Click" IsChecked="True"/>
+        <CheckBox x:Name="checkBox_ch3" Content="К3" Margin="181,331,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Click="checkBox_ch3_Click" IsChecked="True"/>
+        <CheckBox x:Name="checkBox_ch4" Content="К4" Margin="227,331,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Click="checkBox_ch4_Click" IsChecked="True"/>
         <Label x:Name="label" Content="Каналы" HorizontalAlignment="Left" Margin="136,302,0,0" VerticalAlignment="Top" Height="24"/>
 
     </Grid>
