@@ -19,6 +19,7 @@ using System.Threading;
 using Microsoft.Win32;
 using System.Net;
 using System.Net.Sockets;
+using System.Timers;
 
 namespace stnd_72_v2
 {
@@ -69,6 +70,8 @@ namespace stnd_72_v2
         public byte PRD1_k2;
         public byte PRD2_k2;
 
+
+
         public class DAC
         {
             public bool PWRDN;
@@ -87,7 +90,7 @@ namespace stnd_72_v2
         }
 
         public DAC DAC0 = new DAC("DAC0");
-        public DAC DAC1 = new DAC("DAC1"); 
+        public DAC DAC1 = new DAC("DAC1");
 
         public ADC ADC0_072;
         public ADC ADC1_072;
@@ -96,7 +99,7 @@ namespace stnd_72_v2
         public MAC MAC0_072;//переменная состояния блока МАС ethernet в 072
         public MAC MAC1_072;//переменная состояния блока МАС ethernet в 072
 
-        public byte SWITCH_072=0xff;//переменная состояния переключателей 072
+        public byte SWITCH_072 = 0xff;//переменная состояния переключателей 072
         public uint DDS_072;        //переменная состояния кода частоты модуля DDS в блоке тест на DAC
         public uint ATT_072;        //переменная состояния аттенюаторов 072
 
@@ -110,26 +113,26 @@ namespace stnd_72_v2
         int MSG_ID_CH7 = 107;
         int MSG_ID_CH8 = 108;
 
-        public byte CMD_DAC_PWRDN       = 50;//команда вкл/выкл DAC 
-        public byte CMD_DAC_RST         = 51;//команда reset DAC
-        public byte CMD_DAC_init        = 52;
-        public byte CMD_DAC_DDS_init    = 53;
-        public byte CMD_DAC_JESD_info   = 54;
-        public byte CMD_DAC_info        = 55;
-        public byte CMD_DAC_PHY_info    = 56;
-        public byte CMD_DAC_DDS_freq    = 57;
-        public byte CMD_DAC_DDS_phase   = 58;
-        public byte CMD_DAC_DDS_amp     = 59;
-        public byte CMD_DAC_delay       = 60;
-        public byte CMD_DAC_mixer_gain  = 61;
-        public byte CMD_DAC_coarse_dac  = 62;
-        public byte CMD_DAC_QMC_gain    = 63;
-        public byte CMD_LMK_init        = 64;
-        public byte CMD_DDS_freq        = 65;//команда установки частоты DDS в ПЛИС
-        public byte CMD_DDS_phase       = 66;
-        public byte CMD_DDS_freq_ramp   = 67;
-        public byte CMD_DDS_ramp_rate   = 68;
-        public byte CMD_CHANNEL         = 69;//команда переключения каналов в 072 (между ЦАП-АЦП и ЦАП-Выход)
+        public byte CMD_DAC_PWRDN = 50;//команда вкл/выкл DAC 
+        public byte CMD_DAC_RST = 51;//команда reset DAC
+        public byte CMD_DAC_init = 52;
+        public byte CMD_DAC_DDS_init = 53;
+        public byte CMD_DAC_JESD_info = 54;
+        public byte CMD_DAC_info = 55;
+        public byte CMD_DAC_PHY_info = 56;
+        public byte CMD_DAC_DDS_freq = 57;
+        public byte CMD_DAC_DDS_phase = 58;
+        public byte CMD_DAC_DDS_amp = 59;
+        public byte CMD_DAC_delay = 60;
+        public byte CMD_DAC_mixer_gain = 61;
+        public byte CMD_DAC_coarse_dac = 62;
+        public byte CMD_DAC_QMC_gain = 63;
+        public byte CMD_LMK_init = 64;
+        public byte CMD_DDS_freq = 65;//команда установки частоты DDS в ПЛИС
+        public byte CMD_DDS_phase = 66;
+        public byte CMD_DDS_freq_ramp = 67;
+        public byte CMD_DDS_ramp_rate = 68;
+        public byte CMD_CHANNEL = 69;//команда переключения каналов в 072 (между ЦАП-АЦП и ЦАП-Выход)
 
 
         public byte FLAG_ETH_request = 0;//флаг отосланного запроса на кассету, проверяется на предмет ответа в таймере
@@ -173,7 +176,7 @@ namespace stnd_72_v2
         const uint MSG_PWR_CHANNEL = 150;
 
 
-        public SerialPort serialPort1 = new SerialPort();        
+        public SerialPort serialPort1 = new SerialPort();
         static bool _continue;
         Byte[] RCV = new byte[64000];
         int sch_packet = 0;
@@ -194,7 +197,7 @@ namespace stnd_72_v2
             my_port = UInt16.Parse(textBox_my_port.Text);
 
             //Create the server.
-           IPEndPoint serverEnd = new IPEndPoint(my_ip, my_port);
+            IPEndPoint serverEnd = new IPEndPoint(my_ip, my_port);
             try
             {
                 _server = new UdpClient(serverEnd);
@@ -204,13 +207,13 @@ namespace stnd_72_v2
             {
                 Console.WriteLine(ex.Message);
                 MessageBox.Show("Нет абонента!");
-            }            
+            }
 
             //Start listening.
 
             Thread listenThread = new Thread(new ThreadStart(Listening));
             listenThread.Start();
-            
+
             //Change state to indicate the server starts.
             _isServerStarted = true;
 
@@ -237,7 +240,7 @@ namespace stnd_72_v2
                         Array.Copy(data, RCV, data.Length);//копируем массив отсчётов в форму обработки                    
                                                            //      FLAG_UDP_RCV = 1;
                         RCV_size = data.Length;
-                        UDP_BUF_DESCRIPT();                        
+                        UDP_BUF_DESCRIPT();
                     }
                     sch_packet++;
                 }
@@ -264,8 +267,6 @@ namespace stnd_72_v2
         }
 
 
-
-        System.Windows.Threading.DispatcherTimer Timer1 = new System.Windows.Threading.DispatcherTimer();
         System.Windows.Threading.DispatcherTimer Timer2 = new System.Windows.Threading.DispatcherTimer();
 
         int FLAG_TIMER_1 = 0;
@@ -313,17 +314,17 @@ namespace stnd_72_v2
             MSG1.MSG.CMD.A = new byte[4];
             //    Debug.WriteLine("------------------");
 
-            MSG1.Frame_size   = Convert.ToUInt16((RCV[0+ tmp] << 8) + RCV[1+ tmp]);
-            MSG1.Frame_number = Convert.ToUInt16((RCV[2+ tmp] << 8) + RCV[3+ tmp]);
-            MSG1.Stop_bit     = Convert.ToUInt16(1);
-            MSG1.Msg_uniq_id  = Convert.ToUInt32((RCV[4+ tmp] << 24) + (RCV[5+ tmp] << 16) + (RCV[6+ tmp] << 8) + (RCV[7+ tmp] << 0));
-            MSG1.Sender_id    = Convert.ToUInt64((RCV[8+ tmp] << 56) + (RCV[9+ tmp] << 48) + (RCV[10+ tmp] << 40) + (RCV[11+ tmp] << 32) + (RCV[12+ tmp] << 24) + (RCV[13+ tmp] << 16) + (RCV[14+ tmp] << 8) + (RCV[15+ tmp] << 0));
-            MSG1.Receiver_id  = Convert.ToUInt64((RCV[16] << 56) + (RCV[17] << 48) + (RCV[18] << 40) + (RCV[19] << 32) + (RCV[20] << 24) + (RCV[21] << 16) + (RCV[22] << 8) + (RCV[23] << 0));
+            MSG1.Frame_size = Convert.ToUInt16((RCV[0 + tmp] << 8) + RCV[1 + tmp]);
+            MSG1.Frame_number = Convert.ToUInt16((RCV[2 + tmp] << 8) + RCV[3 + tmp]);
+            MSG1.Stop_bit = Convert.ToUInt16(1);
+            MSG1.Msg_uniq_id = Convert.ToUInt32((RCV[4 + tmp] << 24) + (RCV[5 + tmp] << 16) + (RCV[6 + tmp] << 8) + (RCV[7 + tmp] << 0));
+            MSG1.Sender_id = Convert.ToUInt64((RCV[8 + tmp] << 56) + (RCV[9 + tmp] << 48) + (RCV[10 + tmp] << 40) + (RCV[11 + tmp] << 32) + (RCV[12 + tmp] << 24) + (RCV[13 + tmp] << 16) + (RCV[14 + tmp] << 8) + (RCV[15 + tmp] << 0));
+            MSG1.Receiver_id = Convert.ToUInt64((RCV[16] << 56) + (RCV[17] << 48) + (RCV[18] << 40) + (RCV[19] << 32) + (RCV[20] << 24) + (RCV[21] << 16) + (RCV[22] << 8) + (RCV[23] << 0));
             MSG1.MSG.Msg_size = Convert.ToUInt32((RCV[24] << 24) + (RCV[25] << 16) + (RCV[26] << 8) + (RCV[27] << 0));
             MSG1.MSG.Msg_type = Convert.ToUInt32((RCV[28] << 24) + (RCV[29] << 16) + (RCV[30] << 8) + (RCV[31] << 0));
             MSG1.MSG.Num_cmd_in_msg = Convert.ToUInt64((RCV[32] << 56) + (RCV[33] << 48) + (RCV[34] << 40) + (RCV[35] << 32) + (RCV[36] << 24) + (RCV[37] << 16) + (RCV[38] << 8) + (RCV[39] << 0));
 
-            
+
             Debug.WriteLine("    Frame_size:" + MSG1.Frame_size);
             Debug.WriteLine("  Frame_number:" + MSG1.Frame_number);
             Debug.WriteLine("   Msg_uniq_id:" + MSG1.Msg_uniq_id);
@@ -332,7 +333,7 @@ namespace stnd_72_v2
             Debug.WriteLine("      Msg_size:" + MSG1.MSG.Msg_size);
             Debug.WriteLine("      Msg_type:" + MSG1.MSG.Msg_type);
             Debug.WriteLine("Num_cmd_in_msg:" + MSG1.MSG.Num_cmd_in_msg);
-           
+
             offset = 40;
 
             for (i = 0; i < Convert.ToInt32(MSG1.MSG.Num_cmd_in_msg); i++)
@@ -350,7 +351,7 @@ namespace stnd_72_v2
                 Debug.WriteLine("Cmd_size:" + MSG1.MSG.CMD.Cmd_size);
                 Debug.WriteLine("Cmd_type:" + MSG1.MSG.CMD.Cmd_type);
                 Debug.WriteLine("Cmd_id  :" + MSG1.MSG.CMD.Cmd_id);
-                Debug.WriteLine("Cmd_time:" + MSG1.MSG.CMD.Cmd_time);                
+                Debug.WriteLine("Cmd_time:" + MSG1.MSG.CMD.Cmd_time);
                 //---------------------------------------------------------------------------------
 
                 for (j = 0; j < Convert.ToInt32(MSG1.MSG.CMD.Cmd_size); j++)
@@ -363,7 +364,7 @@ namespace stnd_72_v2
 
                 switch (MSG1.MSG.CMD.Cmd_type)
                 {
-                    case 0:  break;
+                    case 0: break;
                 }
 
                 // TEMP_channel(MSG1.MSG.CMD.A);
@@ -379,14 +380,14 @@ namespace stnd_72_v2
 
             Timer2.Tick += new EventHandler(Timer2_Tick);
             Timer2.Interval = new TimeSpan(0, 0, 0, 0, 250);
-            //     Timer2.Start();//запускаю таймер проверяющий приём по UDP          
+            //  Timer2.Start();//запускаю таймер проверяющий приём по UDP          
         }
 
         private void button_comport_send_Click(object sender, RoutedEventArgs e)
         {
             string command1 = " ~0 freq:";
             SolidColorBrush myBrush = new SolidColorBrush(Colors.Red);
- 
+
             try
             {
                 if (serialPort1.IsOpen == false)
@@ -408,14 +409,14 @@ namespace stnd_72_v2
             }
 
         }
-     
+
 
         private void button_comport_open_Click(object sender, RoutedEventArgs e)
         {
- 
+
             SolidColorBrush myBrush = new SolidColorBrush(Colors.Red);
 
-            if (serialPort1.IsOpen==false)
+            if (serialPort1.IsOpen == false)
             {
                 // Allow the user to set the appropriate properties.
                 serialPort1.PortName = textBox_comport.Text;
@@ -449,10 +450,10 @@ namespace stnd_72_v2
                 button_comport_open.Content = "open";
                 button_comport_send.Background = Brushes.Black;
             }
-           
+
         }
 
- public   string console_text = "";
+        public string console_text = "";
         private void OnDataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             var serialDevice = sender as SerialPort;
@@ -462,16 +463,16 @@ namespace stnd_72_v2
 
             string z = Encoding.GetEncoding(1251).GetString(buffer);//чтобы видеть русский шрифт!!!
 
-           // for (i = 0; i < buffer.Length; i++) z = z + Convert.ToString(buffer[i]);
+            // for (i = 0; i < buffer.Length; i++) z = z + Convert.ToString(buffer[i]);
 
             // process data on the GUI thread
             Application.Current.Dispatcher.Invoke(
-                new Action(() => 
+                new Action(() =>
                 {
                     //   Debug.WriteLine("чё-то принято!");
                     console_text = console_text + z;
-                   
-                    Debug.WriteLine(":"+ z);
+
+                    Debug.WriteLine(":" + z);
                     /*
                 ... do something here ...
                 */
@@ -487,7 +488,7 @@ namespace stnd_72_v2
                 filename = openFileDialog.FileName;
                 config = File.ReadAllText(filename);
             }
-                
+
         }
 
         struct Command
@@ -531,7 +532,7 @@ namespace stnd_72_v2
             MSG = config;
 
             Start();//запускаю сервер UDP
-        //    Timer2.Start();//запускаю таймер проверяющий приём по UDP  
+                    //    Timer2.Start();//запускаю таймер проверяющий приём по UDP  
 
             try
             {
@@ -718,21 +719,21 @@ namespace stnd_72_v2
         }
         //-----------------------------------------------------
 
-        public  bool[]  A_form      = new bool[2];
-        public  bool[]  D_form      = new bool[2];
-        public  bool[]  P_form      = new bool[1];
-        public  bool[]  DDS_form    = new bool[1];
-        public  bool[] Console_form = new bool[1];
+        public bool[] A_form = new bool[2];
+        public bool[] D_form = new bool[2];
+        public bool[] P_form = new bool[1];
+        public bool[] DDS_form = new bool[1];
+        public bool[] Console_form = new bool[1];
 
         private void button_adc0_Click(object sender, RoutedEventArgs e)
         {
-            if (A_form[0]==false)
+            if (A_form[0] == false)
             {
                 ADC_form newForm = new ADC_form("ADC0");
                 A_form[0] = true;
                 newForm.Show();
                 newForm.Owner = this;
-            }            
+            }
         }
 
         private void button_adc1_Click(object sender, RoutedEventArgs e)
@@ -779,7 +780,7 @@ namespace stnd_72_v2
                 Console_form[0] = true;
                 newForm.Show();
                 newForm.Owner = this;
-              
+
             }
         }
 
@@ -934,37 +935,37 @@ namespace stnd_72_v2
             int data = 0;
             byte[] a = new byte[4];
 
-                cmd = CMD_LMK_init;
-                data = 1;
+            cmd = CMD_LMK_init;
+            data = 1;
 
-                a[3] = 1;
-                FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
-                UDP_SEND
-                           (
-                           cmd, //команда 
-                           a,   //данные
-                           4,   //число данных в байтах
-                           0    //время исполнения , 0 - значит немедленно как сможешь.
-                           );
+            a[3] = 1;
+            FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
+            UDP_SEND
+                       (
+                       cmd, //команда 
+                       a,   //данные
+                       4,   //число данных в байтах
+                       0    //время исполнения , 0 - значит немедленно как сможешь.
+                       );
 
-                s1 = " ~0 init_lmk:" + Convert.ToString(a[3]) + "; "; //
+            s1 = " ~0 init_lmk:" + Convert.ToString(a[3]) + "; "; //
 
-                try
+            try
+            {
+                if (serialPort1.IsOpen == false)
                 {
-                    if (serialPort1.IsOpen == false)
-                    {
-                        serialPort1.Open();
-                    }
-                    Debug.WriteLine("шлём:" + s1);
-                    serialPort1.Write(s1);
+                    serialPort1.Open();
+                }
+                Debug.WriteLine("шлём:" + s1);
+                serialPort1.Write(s1);
 
-                }
-                catch (Exception ex)
-                {
-                    // что-то пошло не так и упало исключение... Выведем сообщение исключения
-                    Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'", serialPort1.PortName, ex.Message));
-                }
-            
+            }
+            catch (Exception ex)
+            {
+                // что-то пошло не так и упало исключение... Выведем сообщение исключения
+                Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'", serialPort1.PortName, ex.Message));
+            }
+
         }
 
         private void button_DDS_Click(object sender, RoutedEventArgs e)
@@ -981,41 +982,41 @@ namespace stnd_72_v2
         private void checkBox_ch1_Click(object sender, RoutedEventArgs e)
         {   //
             string s1;
-            byte  cmd;
+            byte cmd;
             byte[] a = new byte[4];
 
-            if (checkBox_ch1.IsChecked ?? true) SWITCH_072 = Convert.ToByte(SWITCH_072 |   0x01);
-            else                                SWITCH_072 = Convert.ToByte(SWITCH_072 & (~0x01));
+            if (checkBox_ch1.IsChecked ?? true) SWITCH_072 = Convert.ToByte(SWITCH_072 | 0x01);
+            else SWITCH_072 = Convert.ToByte(SWITCH_072 & (~0x01));
 
             cmd = CMD_CHANNEL;
 
-                a[3] = SWITCH_072;
-                FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
-                UDP_SEND
-                           (
-                           cmd, //команда управление светодиодом "ИСПРАВ"
-                           a,   //данные
-                           4,   //число данных в байтах
-                           0    //время исполнения , 0 - значит немедленно как сможешь.
-                           );
+            a[3] = SWITCH_072;
+            FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
+            UDP_SEND
+                       (
+                       cmd, //команда управление светодиодом "ИСПРАВ"
+                       a,   //данные
+                       4,   //число данных в байтах
+                       0    //время исполнения , 0 - значит немедленно как сможешь.
+                       );
 
-                s1 = " ~0 upr_switch:" + Convert.ToString(a[3]) + "; "; //команда по уарту
+            s1 = " ~0 upr_switch:" + Convert.ToString(a[3]) + "; "; //команда по уарту
 
-                try
+            try
+            {
+                if (serialPort1.IsOpen == false)
                 {
-                    if (serialPort1.IsOpen == false)
-                    {
-                        serialPort1.Open();
-                    }
-                    Debug.WriteLine("шлём:" + s1);
-                    serialPort1.Write(s1);
+                    serialPort1.Open();
                 }
-                catch (Exception ex)
-                {
-                    // что-то пошло не так и упало исключение... Выведем сообщение исключения
-                    Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'",serialPort1.PortName, ex.Message));
-                }
-            
+                Debug.WriteLine("шлём:" + s1);
+                serialPort1.Write(s1);
+            }
+            catch (Exception ex)
+            {
+                // что-то пошло не так и упало исключение... Выведем сообщение исключения
+                Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'", serialPort1.PortName, ex.Message));
+            }
+
         }
 
         private void checkBox_ch2_Click(object sender, RoutedEventArgs e)
@@ -1024,8 +1025,8 @@ namespace stnd_72_v2
             byte cmd;
             byte[] a = new byte[4];
 
-            if (checkBox_ch2.IsChecked ?? true) SWITCH_072 = Convert.ToByte(SWITCH_072 |   0x02);
-            else                                SWITCH_072 = Convert.ToByte(SWITCH_072 & (~0x02));
+            if (checkBox_ch2.IsChecked ?? true) SWITCH_072 = Convert.ToByte(SWITCH_072 | 0x02);
+            else SWITCH_072 = Convert.ToByte(SWITCH_072 & (~0x02));
 
             cmd = CMD_CHANNEL;
 
@@ -1064,8 +1065,8 @@ namespace stnd_72_v2
             byte cmd;
             byte[] a = new byte[4];
 
-            if (checkBox_ch3.IsChecked ?? true) SWITCH_072 = Convert.ToByte(SWITCH_072 |   0x04);
-            else                                SWITCH_072 = Convert.ToByte(SWITCH_072 & (~0x04));
+            if (checkBox_ch3.IsChecked ?? true) SWITCH_072 = Convert.ToByte(SWITCH_072 | 0x04);
+            else SWITCH_072 = Convert.ToByte(SWITCH_072 & (~0x04));
 
             cmd = CMD_CHANNEL;
 
@@ -1104,8 +1105,8 @@ namespace stnd_72_v2
             byte cmd;
             byte[] a = new byte[4];
 
-            if (checkBox_ch4.IsChecked ?? true) SWITCH_072 = Convert.ToByte(SWITCH_072 |   0x08);
-            else                                SWITCH_072 = Convert.ToByte(SWITCH_072 & (~0x08));
+            if (checkBox_ch4.IsChecked ?? true) SWITCH_072 = Convert.ToByte(SWITCH_072 | 0x08);
+            else SWITCH_072 = Convert.ToByte(SWITCH_072 & (~0x08));
 
             cmd = CMD_CHANNEL;
 
@@ -1136,5 +1137,66 @@ namespace stnd_72_v2
                 Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'", serialPort1.PortName, ex.Message));
             }
         }
+
+        //---------------------------------------------------------------------------
+        private static bool FLAG_UART_TX = true;
+        private static System.Timers.Timer aTimer;
+        private string S_uart = "";
+        private static void SetTimer(int t)
+        {
+            // Create a timer with a two second interval.
+            aTimer = new System.Timers.Timer(t);
+            // Hook up the Elapsed event for the timer. 
+            aTimer.Elapsed += OnTimedEvent;
+            aTimer.AutoReset = true;
+            aTimer.Enabled = true;
+        }
+
+        private static void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            FLAG_UART_TX = true;
+            aTimer.Stop();
+        //  Console.WriteLine("time {0:HH:mm:ss.fff}",e.SignalTime);
+        }
+         public uint UART_TX(string[] Array)
+        {
+            uint i = 0;
+            string s1 = "";
+            SetTimer(50);
+            while (i < (Array.Length-1))
+              {
+                if (FLAG_UART_TX)
+                {
+                    FLAG_UART_TX = false;
+                    i++;
+                    s1 = Array[i];
+                    S_uart = s1;
+                    UART(S_uart);
+                    aTimer.Start();
+                    Debug.WriteLine("шлём:" + s1);
+                }                                     
+               }          
+            return 1;
+        }
+
+         void UART (string s1)
+        {
+            try
+            {
+               if (serialPort1.IsOpen == false)
+               {
+                serialPort1.Open();
+               }
+                serialPort1.Write(s1);
+            }
+            catch (Exception ex)
+            {
+                // что-то пошло не так и упало исключение... Выведем сообщение исключения
+                Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'", serialPort1.PortName, ex.Message));
+                MessageBox.Show("Закрыт компорт!");
+            }
+        }
+        
+
     }
 }

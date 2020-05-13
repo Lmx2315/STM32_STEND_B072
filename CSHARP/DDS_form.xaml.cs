@@ -55,134 +55,65 @@ namespace stnd_72_v2
             string s8 = "";//Tblank1
             string s9 = "";//Tblank2
             string sa = "";//spi4_sync
-
-            byte cmd = 203;
-            UInt64  data = 0;
-            UInt64 data_FREQ    = 0;
-            UInt64 FREQ_STEP    = 0;
-            UInt32 FREQ_RATE    = 0;
-            UInt32 N_impulse    = 0;
-            UInt32 TYPE_impulse = 0;
-            UInt32 Interval_Ti  = 0;
-            UInt32 Interval_Tp  = 0;
-            UInt32 Tblank1      = 0;
-            UInt32 Tblank2      = 0;
-
+            UInt64 data = 0;
             double rezult = 0;
-            byte[] a = new byte[7];
             double Fnco = 96_000_000;//тактовая частота DDS
+            string[] Ar=new string[10];
 
             MainWindow main = this.Owner as MainWindow;
             if (main != null)
             {
-                //для кого шлём команду
-                //в первом байте данных команды размещаем адресат получения команды
-                if (Name_this == "DDS") a[0] = 1;//первый цап
-
-                //-----отсылаем команду кода частоты DDS внутри DAC--------
-                cmd = main.CMD_DDS_freq;//длина команды 48 бит
-                rezult = (Convert.ToDouble(textBox_freq.Text) * Convert.ToDouble(Math.Pow(2, 48)))/ Fnco;
+                //-----отсылаем команду кода частоты DDS 
+                rezult = (Convert.ToDouble(textBox_freq.Text) * Convert.ToDouble(Math.Pow(2, 48)))*1_000_000/ Fnco;
                 data = Convert.ToUInt64(rezult);
+                s1 = " ~0 FREQ:" + Convert.ToString(data) + "; ";     //   
 
-                Debug.WriteLine("data:" + data);
-                /*
-                a[1] = Convert.ToByte(data >> 40 & 0xff);
-                a[2] = Convert.ToByte(data >> 32 & 0xff);
-                a[3] = Convert.ToByte(data >> 24 & 0xff);
-                a[4] = Convert.ToByte(data >> 16 & 0xff);
-                a[5] = Convert.ToByte(data >> 8 & 0xff);
-                a[6] = Convert.ToByte(data >> 0 & 0xff);
+                rezult = (Convert.ToDouble(textBox_Freq_ramp.Text) * Convert.ToDouble(Math.Pow(2, 48))) * 1_000/ Fnco;
+                data = Convert.ToUInt64(rezult);
+                s2 = " ~0 FREQ_STEP:" + Convert.ToString(data) + "; ";//FREQ_STEP
 
-                main.FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
-                main.UDP_SEND
-                           (
-                           cmd, //команда 
-                           a,   //данные
-                           7,   //число данных в байтах
-                           0    //время исполнения , 0 - значит немедленно как сможешь.
-                           );
-                //--------------------------------------------------------------
-                //-----отсылаем команду кода фазы DDS внутри DAC        --------
-                cmd = main.CMD_DDS_phase;//длина команды 16 бит
+                rezult = (Convert.ToDouble(textBox_Ramp_rate.Text));
+                data = Convert.ToUInt64(rezult);
+                s3 = " ~0 FREQ_RATE:" + Convert.ToString(data) + "; ";//
 
-                data = (Convert.ToUInt32 (textBox_phase.Text) * Convert.ToUInt32(Math.Pow(2, 16))) / 360;
+                rezult = (Convert.ToDouble(textBox_N_impulse.Text));
+                data = Convert.ToUInt64(rezult);
+                s4 = " ~0 N_impulse:" + Convert.ToString(data) + "; ";//N_impulse
 
-                a[2] = Convert.ToByte(data >> 8 & 0xff);
-                a[3] = Convert.ToByte(data >> 0 & 0xff);
+                rezult = (Convert.ToDouble(textBox_TYPE_impulse.Text));
+                data = Convert.ToUInt64(rezult);
+                s5 = " ~0 TYPE_impulse:" + Convert.ToString(data) + "; ";//TYPE_impulse
 
-                main.FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
-                main.UDP_SEND
-                           (
-                           cmd, //команда 
-                           a,   //данные
-                           4,   //число данных в байтах
-                           0    //время исполнения , 0 - значит немедленно как сможешь.
-                           );
+                rezult = (Convert.ToDouble(textBox_Interval_Ti.Text));
+                data = Convert.ToUInt64(rezult);
+                s6 = " ~0 Interval_Ti:" + Convert.ToString(data) + "; ";//Interval_Ti
 
-                //-----отсылаем команду кода freq_ramp DDS внутри DAC        --------
-                cmd = main.CMD_DDS_freq_ramp;//длина команды 48 бит
+                rezult = (Convert.ToDouble(textBox_Interval_Tp.Text));
+                data = Convert.ToUInt64(rezult);
+                s7 = " ~0 Interval_Tp:" + Convert.ToString(data) + "; ";//Interval_Tp
 
-                data = Convert.ToUInt64 (textBox_Freq_ramp.Text);
+                rezult = (Convert.ToDouble(textBox_Tblank1.Text));
+                data = Convert.ToUInt64(rezult);
+                s8 = " ~0 Tblank1:" + Convert.ToString(data) + "; ";//Tblank1
 
-                a[1] = Convert.ToByte(data >> 40 & 0xff);
-                a[2] = Convert.ToByte(data >> 32 & 0xff);
-                a[3] = Convert.ToByte(data >> 24 & 0xff);
-                a[4] = Convert.ToByte(data >> 16 & 0xff);
-                a[5] = Convert.ToByte(data >> 8 & 0xff);
-                a[6] = Convert.ToByte(data >> 0 & 0xff);
+                rezult = (Convert.ToDouble(textBox_Tblank2.Text));
+                data = Convert.ToUInt64(rezult);
+                s9 = " ~0 Tblank2:" + Convert.ToString(data) + "; ";//Tblank2
 
-                main.FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
-                main.UDP_SEND
-                           (
-                           cmd, //команда 
-                           a,   //данные
-                           7,   //число данных в байтах
-                           0    //время исполнения , 0 - значит немедленно как сможешь.
-                           );
+                sa = " ~0 spi4_sync" + "; ";//spi4_sync  запускает синхронизацию в ПЛИС
 
-                //-----отсылаем команду кода Ramp rate сигнала DDS внутри DAC        --------
-                cmd = main.CMD_DDS_ramp_rate;//длина команды 16 бит
+                Ar[0] = s1;
+                Ar[1] = s2;
+                Ar[2] = s3;
+                Ar[3] = s4;
+                Ar[4] = s5;
+                Ar[5] = s6;
+                Ar[6] = s7;
+                Ar[7] = s8;
+                Ar[8] = s9;
+                Ar[9] = sa;
 
-                data = Convert.ToUInt64(textBox_Ramp_rate.Text);
-
-                a[2] = Convert.ToByte(data >> 8 & 0xff);
-                a[3] = Convert.ToByte(data >> 0 & 0xff);
-
-                main.FLAG_ETH_request = 1;//поднимаем флаг запроса по ETH с поделкой , для контроля обмена по сети
-                main.UDP_SEND
-                           (
-                           cmd, //команда 
-                           a,   //данные
-                           4,   //число данных в байтах
-                           0    //время исполнения , 0 - значит немедленно как сможешь.
-                           );
-                */
- //отсылаем частоту DDS    по UART      
-                s1 = " ~0 FREQ:" + Convert.ToString(a[3]) + "; "; //   
-                s2 = "";//FREQ_STEP
-                s3 = "";//FREQ_RATE
-                s4 = "";//N_impulse
-                s5 = "";//TYPE_impulse
-                s6 = "";//Interval_Ti
-                s7 = "";//Interval_Tp
-                s8 = "";//Tblank1
-                s9 = "";//Tblank2
-                sa = "";//spi4_sync
-
-                try
-                {
-                    if (main.serialPort1.IsOpen == false)
-                    {
-                        main.serialPort1.Open();
-                    }
-                    Debug.WriteLine("шлём:" + s1);
-                    main.serialPort1.Write(s1);
-                }
-                catch (Exception ex)
-                {
-                    // что-то пошло не так и упало исключение... Выведем сообщение исключения
-                    Console.WriteLine(string.Format("Port:'{0}' Error:'{1}'", main.serialPort1.PortName, ex.Message));
-                }
+                main.UART_TX(Ar);
                
             }
         }
