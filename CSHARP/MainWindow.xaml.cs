@@ -1162,7 +1162,7 @@ namespace stnd_72_v2
         {
             uint i = 0;
             string s1 = "";
-            SetTimer(50);
+            SetTimer(50);//милисекунды
             while (i < (Array.Length-1))
               {
                 if (FLAG_UART_TX)
